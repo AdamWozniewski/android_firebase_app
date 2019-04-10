@@ -1,6 +1,7 @@
 package com.adamwozniewski.android_firebase_test;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +14,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,10 +40,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.firebaseDatabase = FirebaseDatabase.getInstance();
 
+
+//        this.firebaseDatabase.getReference().child("people")
+//                .child('nazwa_klucza_z_bazy') // badanie zmian na TYM konkretnym obiekcie
+//                .addListenerForSingleValueEvent(new ValueEventListener() { // wykona się TYLKO raz
+//                .addValueEventListener(new ValueEventListener() { // nasłuchiwanie zmian
+//                .addChildEventListener(new ChildEventListener() { // wyłąpytanie zmian w kolekjci, dokłądniejsze sterowanie
+//                    @Override
+//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                    }
+//                    @Override
+//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                    }
+//                    @Override
+//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//                    }
+//                    @Override
+//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                    }
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                    }
+//                })
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // Sukces
+//                // dataSnapshot.getChildren(); // pobierz obiekty
+//                for (DataSnapshot child: dataSnapshot.getChildren()) {
+//                    Person personFromList = child.getValue(Person.class);
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Błąd
+//            }
+//        });
+
 //        this.mAuth = FirebaseAuth.getInstance();
 //        this.mAuth.signInAnonymously()
 //                .addOnCompleteListener(this)
 //                .addOnFailureListener(this);
+
+        this.firebaseDatabase.getReference().child("people").child("klucz_osoby_1").child("friends").child("friend_osoby_1")
+                .removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+
+                    }
+                });
     }
 
     @Override
@@ -48,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Person tomek = new Person("Tomek"); // znajomi
         Person olga = new Person("Olga");
 
-        kasia.getFriends().add(tomek);
-        kasia.getFriends().add(olga);
+//        kasia.getFriends().add(tomek);
+//        kasia.getFriends().add(olga);
 
 //        this.firebaseDatabase.getReference() // sposób 1) na zapis do bazy
 //                .push()
