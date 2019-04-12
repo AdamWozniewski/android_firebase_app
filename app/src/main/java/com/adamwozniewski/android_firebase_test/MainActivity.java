@@ -1,121 +1,28 @@
 package com.adamwozniewski.android_firebase_test;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-import com.adamwozniewski.android_firebase_test.Models.Person;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private FirebaseAuth mAuth;
-
-    private FirebaseDatabase firebaseDatabase;
-
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button) findViewById(R.id.buttonOk);
-        btn.setOnClickListener(this); // this odnosi się do metody OnCLick
 
-
-        this.firebaseDatabase = FirebaseDatabase.getInstance();
-
-
-//        this.firebaseDatabase.getReference().child("people")
-//                .child('nazwa_klucza_z_bazy') // badanie zmian na TYM konkretnym obiekcie
-//                .addListenerForSingleValueEvent(new ValueEventListener() { // wykona się TYLKO raz
-//                .addValueEventListener(new ValueEventListener() { // nasłuchiwanie zmian
-//                .addChildEventListener(new ChildEventListener() { // wyłąpytanie zmian w kolekjci, dokłądniejsze sterowanie
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                    }
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                    }
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//                    }
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                    }
-//                })
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                // Sukces
-//                // dataSnapshot.getChildren(); // pobierz obiekty
-//                for (DataSnapshot child: dataSnapshot.getChildren()) {
-//                    Person personFromList = child.getValue(Person.class);
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Błąd
-//            }
-//        });
-
-//        this.mAuth = FirebaseAuth.getInstance();
-//        this.mAuth.signInAnonymously()
-//                .addOnCompleteListener(this)
-//                .addOnFailureListener(this);
-
-        this.firebaseDatabase.getReference().child("people").child("klucz_osoby_1").child("friends").child("friend_osoby_1")
-                .removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-
-                    }
-                });
     }
 
     @Override
-    public void onClick(View v) {
-        Person kasia = new Person("Kasia"); // utworzy się model bazy z taką nazwą: Person
-
-        Person tomek = new Person("Tomek"); // znajomi
-        Person olga = new Person("Olga");
-
-//        kasia.getFriends().add(tomek);
-//        kasia.getFriends().add(olga);
-
-//        this.firebaseDatabase.getReference() // sposób 1) na zapis do bazy
-//                .push()
-//                .setValue(kasia) // wartosc, jak jest tablica przyjaciół to pojawi się pole o nazwie 'friends', unikamy ArrayList
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Log.d(TAG, "Udalo sie");
-//                    }
-//                });
-
-        // SPosob 2) DOBRY
-        DatabaseReference databaseReference = this.firebaseDatabase.getReference().child("people").push(); //zalecany sposoób, sam odnajdzie metodę z databaseReference w modelu
-        databaseReference.setValue(kasia); // Kasia zostanie zapisana do kolekjci 'people'
-        kasia.saveFriendsToDB(databaseReference);
-
+    protected void onResume() { // na kazde uruchomienie aplikacji
+        super.onResume();
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) { // sprawdzamy czy ktoś jest zalogowany
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class); // Uruchom Login Actibvity
+            MainActivity.this.startActivity(intent);
+            MainActivity.this.finish();
+        }
     }
 }
