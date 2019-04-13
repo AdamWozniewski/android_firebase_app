@@ -27,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements ChildEventListener {
     AdapterPong adapterPong;
-    EditText editText;
+    EditText editText, messageText;
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
     private DatabaseReference databaseReference;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         setContentView(R.layout.activity_main);
 
         this.editText = (EditText) findViewById(R.id.editText);
+        this.messageText = (EditText) findViewById(R.id.editTextContent); // pole do wpisania wiadomosci
         this.floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView); // to taki komponent
 
@@ -51,44 +52,48 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
             @Override
             public void onClick(View v) {
                 String receiver = MainActivity.this.editText.getText().toString().trim();
+                String message = MainActivity.this.messageText.getText().toString();
                 if (receiver.length() > 0) {
                     Intent serviceIntent = new Intent(MainActivity.this, PongService.class);
                     serviceIntent.putExtra("receiver", receiver);
+                    serviceIntent.putExtra("message", message);
                     startService(serviceIntent);
                 }
             }
         });
-        this.checkIfPersonIsLoggedIn();
+//        this.checkIfPersonIsLoggedIn();
+
+        redirectToLogin();
     }
 
-    @Override
-    protected void onResume() { // na kazde uruchomienie aplikacji
-        super.onResume();
-        checkIfPersonIsLoggedIn();
-    }
+//    @Override
+//    protected void onResume() { // na kazde uruchomienie aplikacji
+//        super.onResume();
+//        checkIfPersonIsLoggedIn();
+//    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (this.databaseReference != null) {
-            this.databaseReference.removeEventListener(this);
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (this.databaseReference != null) {
+//            this.databaseReference.removeEventListener(this);
+//        }
+//    }
 
-    private void checkIfPersonIsLoggedIn() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) { // sprawdzamy czy ktoś jest zalogowany
-            redirectToLogin();
-        } else {
-            this.databaseReference = FirebaseDatabase.getInstance()
-                    .getReference("pongs")
-                    .child(FirebaseAuth
-                            .getInstance()
-                            .getCurrentUser()
-                            .getEmail()
-                            .split("@")[0]);
-            this.databaseReference.addChildEventListener(this);
-        }
-    }
+//    private void checkIfPersonIsLoggedIn() {
+//        if(FirebaseAuth.getInstance().getCurrentUser() == null) { // sprawdzamy czy ktoś jest zalogowany
+//            redirectToLogin();
+//        } else {
+//            this.databaseReference = FirebaseDatabase.getInstance()
+//                    .getReference("pongs")
+//                    .child(FirebaseAuth
+//                            .getInstance()
+//                            .getCurrentUser()
+//                            .getEmail()
+//                            .split("@")[0]);
+//            this.databaseReference.addChildEventListener(this);
+//        }
+//    }
 
     private void redirectToLogin() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class); // Uruchom Login Actibvity

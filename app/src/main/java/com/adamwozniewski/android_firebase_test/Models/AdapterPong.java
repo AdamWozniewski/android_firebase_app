@@ -34,14 +34,17 @@ public class AdapterPong extends RecyclerView.Adapter<AdapterPong.PongHolder> {
     public void onBindViewHolder(@NonNull PongHolder pongHolder, int i) {
         Pong pong = this.pongs.get(i);
         pongHolder.textView.setText(pong.getSenderName());
+        pongHolder.textMessage.setText(pong.getMessage());
     }
 
     public class PongHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+        public TextView textMessage;
 
         public PongHolder(View view) {
             super(view);
             this.textView = (TextView) view.findViewById(R.id.textTitlePong);
+            this.textMessage = (TextView) view.findViewById(R.id.textMessagePong);
         }
 
     }

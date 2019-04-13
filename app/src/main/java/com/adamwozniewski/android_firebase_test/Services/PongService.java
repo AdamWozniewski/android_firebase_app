@@ -20,12 +20,13 @@ public class PongService extends Service {
             return super.onStartCommand(intent, flags,startId);
         }
         final String receiver = intent.getStringExtra("receiver");
+        final String message = intent.getStringExtra("message");
         FirebaseDatabase.getInstance().getReference("users").child(receiver).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // nasłuchiwanie na zmiane
                 if (dataSnapshot.exists()) { // sprawdza czy dana osoba istneije
-                    FirebaseDatabase.getInstance().getReference("pongs").child(receiver).push().setValue(new Pong(receiver));
+                    FirebaseDatabase.getInstance().getReference("pongs").child(receiver).push().setValue(new Pong(receiver, message));
                 }
             }
 

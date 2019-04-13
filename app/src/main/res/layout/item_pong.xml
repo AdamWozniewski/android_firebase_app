@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/textTitlePong"
+        android:id="@+id/textMessagePong"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:layout_toStartOf="@id/textTitlePong"
         android:layout_margin="6dp"
         tools:text="Test title" />
-</LinearLayout>
+    <TextView
+        android:id="@+id/textTitlePong"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-light"
+        android:maxWidth="100dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_margin="6dp"
+        tools:text="Test title" />
+</RelativeLayout>

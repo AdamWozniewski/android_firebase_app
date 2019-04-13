@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "890503743531-47jnr7v7hq2usbnnvjs0goerqpi4fer9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adamwozniewski.android_firebase_test",
+            "certificate_hash": "b4132a88e4fa5871dba39c386039f0ed83f42216"
+          }
+        },
+        {
           "client_id": "890503743531-b71odulphc7mm6uaafo81i6758nfucc9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "890503743531-b71odulphc7mm6uaafo81i6758nfucc9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
