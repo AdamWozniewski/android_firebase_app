@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.adamwozniewski.android_firebase_test.Models.AdapterPong;
 import com.adamwozniewski.android_firebase_test.Models.Pong;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
     EditText editText, messageText;
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
+    TextView textViewUser;
     private DatabaseReference databaseReference;
 
     @Override
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.setItemAnimator(new DefaultItemAnimator());
         this.recyclerView.setAdapter(this.adapterPong);
+        this.textViewUser = (TextView) findViewById(R.id.localUser);
 
         this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,39 +64,41 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
                 }
             }
         });
-//        this.checkIfPersonIsLoggedIn();
+        this.checkIfPersonIsLoggedIn();
 
         redirectToLogin();
     }
 
-//    @Override
-//    protected void onResume() { // na kazde uruchomienie aplikacji
-//        super.onResume();
-//        checkIfPersonIsLoggedIn();
-//    }
+    @Override
+    protected void onResume() { // na kazde uruchomienie aplikacji
+        super.onResume();
+        checkIfPersonIsLoggedIn();
+    }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        if (this.databaseReference != null) {
-//            this.databaseReference.removeEventListener(this);
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (this.databaseReference != null) {
+            this.databaseReference.removeEventListener(this);
+        }
+    }
 
-//    private void checkIfPersonIsLoggedIn() {
-//        if(FirebaseAuth.getInstance().getCurrentUser() == null) { // sprawdzamy czy ktoś jest zalogowany
-//            redirectToLogin();
-//        } else {
-//            this.databaseReference = FirebaseDatabase.getInstance()
-//                    .getReference("pongs")
-//                    .child(FirebaseAuth
-//                            .getInstance()
-//                            .getCurrentUser()
-//                            .getEmail()
-//                            .split("@")[0]);
-//            this.databaseReference.addChildEventListener(this);
-//        }
-//    }
+    private void checkIfPersonIsLoggedIn() {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) { // sprawdzamy czy ktoś jest zalogowany
+            redirectToLogin();
+        } else {
+            String localUser = FirebaseAuth
+                    .getInstance()
+                    .getCurrentUser()
+                    .getEmail()
+                    .split("@")[0];
+            this.databaseReference = FirebaseDatabase.getInstance()
+                    .getReference("pongs")
+                    .child(localUser);
+            this.textViewUser.setText(localUser);
+            this.databaseReference.addChildEventListener(this);
+        }
+    }
 
     private void redirectToLogin() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class); // Uruchom Login Actibvity
