@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements ChildEventListene
             }
         });
         this.checkIfPersonIsLoggedIn();
-
-        redirectToLogin();
     }
 
     @Override
