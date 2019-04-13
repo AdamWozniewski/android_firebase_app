@@ -46,25 +46,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 password.trim().length() > 0
                 && email.trim().length() > 0
         ) {
-//            this.firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull Task<AuthResult> task) {
-//                    if (task.isSuccessful()) {
-//                        Toast.makeText(LoginActivity.this, "Logowanie udane", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(LoginActivity.this, "Błąd: " + task.getException(), Toast.LENGTH_SHORT).show();
-//                        if (task.getException().getMessage().contains("There is no user record")) {
-//                            LoginActivity.this.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    Toast.makeText(LoginActivity.this, "Rejestracja udana", Toast.LENGTH_SHORT).show();
-//                                    LoginActivity.this.userLoggedIn(email);
-//                                }
-//                            });
-//                        }
-//                    }
-//                }
-//            }); // metoda onComplete
+            this.firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginActivity.this, "Logowanie udane", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Błąd: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        if (task.getException().getMessage().contains("There is no user record")) {
+                            LoginActivity.this.firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Toast.makeText(LoginActivity.this, "Rejestracja udana", Toast.LENGTH_SHORT).show();
+                                    LoginActivity.this.userLoggedIn(email);
+                                }
+                            });
+                        }
+                    }
+                }
+            }); // metoda onComplete
         }
     }
 
